@@ -19,6 +19,10 @@ class WikiPipeline:
     def get_page(self, url):
         pass #TODO
 
+    def get_edit(self, TODO):
+        #TODO args - what do we need to get a specific edit?
+        pass
+
     def get_all_page_edits(self, url):
         """
         acquires all versions of the given page, in a list of tuples
