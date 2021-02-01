@@ -149,7 +149,7 @@ def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
             start = time.time()
             print(p['title'])
             article = get_articles(p['title'], lang)
-            outfile = out_path + lang + '_' + p['title'].strip()[ind:] + '.csv'
+            outfile = out_path + lang + '_' + re.sub('[:\s]', '_',p['title'].strip()[ind:]) + '.csv'
             article.to_csv(outfile)
             finished_cat.append(p['title'])
             print(time.time() - start)
