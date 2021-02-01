@@ -66,7 +66,7 @@ def compute_sent(input_file, out_folder, sent_func):
         hist.save_csv(out_folder + '/' + df.title[i] + '.csv')
         
 
-def get_cat(cmtitle):
+def get_cat(cmtitle, lang):
     '''
     Query by using category name and return all the pages or subcategories in the result. 
     '''
@@ -74,7 +74,7 @@ def get_cat(cmtitle):
     
     S = requests.Session()
 
-    URL = "https://en.wikipedia.org/w/api.php"
+    URL = "https://{}.wikipedia.org/w/api.php".format(lang)
 
     PARAMS = {
         "action": "query",
@@ -92,12 +92,12 @@ def get_cat(cmtitle):
     except:
         return 0
 
-def get_articles(cat_name):
+def get_articles(cat_name, lang):
     '''
     Given the name of a category, return all the articles inside the category. 
     '''    
     i = 0
-    PAGES = get_cat(cat_name)
+    PAGES = get_cat(cat_name, lang)
     all_cat = [cat_name]
     articles = []
     while len(PAGES) > 0:
@@ -106,7 +106,7 @@ def get_articles(cat_name):
         if 'Category' in p['title']:
             if p['title'] in all_cat:
                 continue
-            TEMP_P = get_cat(p['title'])
+            TEMP_P = get_cat(p['title'], lang)
             all_cat.append(p['title'])
             if TEMP_P == 0:
                 continue
@@ -120,7 +120,7 @@ def get_articles(cat_name):
     return pd.DataFrame(articles).drop_duplicates().reset_index(drop = True)
   
   
-  def iter_cats(cat_name, skip_cats):
+  def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
     '''
     Get all the articles for each subcategory of one given category. 
     The results are saved in different csv files corresponding to category names.
@@ -128,14 +128,14 @@ def get_articles(cat_name):
     skip_cats: a list of categories that you want to skip    
     '''
     
-    PAGES = get_cat(cat_name)
+    PAGES = get_cat(cat_name, lang)
     finished_cat = skip_cats
     for p in PAGES:
         if 'Category' in p['title'] and not p['title'] in finished_cat:
             start = time.time()
             print(p['title'])
-            article = get_articles(p['title'])
-            outfile = 'en_' + p['title'].strip()[9:] + '.csv'
+            article = get_articles(p['title'], lang)
+            outfile = out_path + lang + '_' + p['title'].strip()[9:] + '.csv'
             article.to_csv(outfile)
             finished_cat.append(p['title'])
             print(time.time() - start)
