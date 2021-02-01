@@ -100,10 +100,16 @@ def get_articles(cat_name, lang):
     PAGES = get_cat(cat_name, lang)
     all_cat = [cat_name]
     articles = []
+    
+    if lang == 'es':
+        CATEGORY = 'Categoría'
+    else:
+        CATEGORY = 'Category'
+        
     while len(PAGES) > 0:
         p = PAGES[0]
         PAGES = PAGES[1:]
-        if 'Category' in p['title']:
+        if CATEGORY in p['title']:
             if p['title'] in all_cat:
                 continue
             TEMP_P = get_cat(p['title'], lang)
@@ -120,7 +126,7 @@ def get_articles(cat_name, lang):
     return pd.DataFrame(articles).drop_duplicates().reset_index(drop = True)
   
   
-  def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
+def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
     '''
     Get all the articles for each subcategory of one given category. 
     The results are saved in different csv files corresponding to category names.
@@ -130,12 +136,20 @@ def get_articles(cat_name, lang):
     
     PAGES = get_cat(cat_name, lang)
     finished_cat = skip_cats
+    
+    if lang == 'es':
+        CATEGORY = 'Categoría'
+    else:
+        CATEGORY = 'Category'
+
+    ind = len(CATEGORY) + 1    
+    
     for p in PAGES:
-        if 'Category' in p['title'] and not p['title'] in finished_cat:
+        if CATEGORY in p['title'] and not p['title'] in finished_cat:
             start = time.time()
             print(p['title'])
             article = get_articles(p['title'], lang)
-            outfile = out_path + lang + '_' + p['title'].strip()[9:] + '.csv'
+            outfile = out_path + lang + '_' + p['title'].strip()[ind:] + '.csv'
             article.to_csv(outfile)
             finished_cat.append(p['title'])
             print(time.time() - start)
