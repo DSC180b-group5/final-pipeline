@@ -7,34 +7,7 @@ from wikiextractor.extract import clean
 from wikiextractor.extract import Extractor
 
 
-def get_history(article_name, lang = 'en'):
-    '''
-    Return all the text and corresponding time of one article given article_name.
-    
-    Example:
-    article_history = get_history('Gigantorhynchus')
-    article_history.head()
-    '''
-    
-    # Get the page
-    response = requests.get(
-        url="https://en.wikipedia.org/w/index.php?title=Special:Export&pages={}&history=1&action=submit+".format(article_name),
-    )
-    soup = BeautifulSoup(response.content, 'html.parser')
-    data = []
-    
-    #Get all the data
-    for rev in soup.find_all('revision'):
-        text = rev.text
-        
-        # Trying to remove anything before the real text (but it doesn't apply to every circumstance).
-        # This line of code will remove XXXX{{XXXXX}} in the begining. 
-        # TODO!
-        #text = re.sub('[^\{]*\{\{[^\{]*\}\}', '', text)
-        
-        # Remove unimportant punctuations 
-        text = re.sub('[\[\]\n\']', '', text)
-        def get_history(article_name,lang = 'en'):
+def get_history(article_name,lang = 'en'):
     '''
     Return all the text and corresponding time of one article given article_name.
     
@@ -53,14 +26,11 @@ def get_history(article_name, lang = 'en'):
     #Get all the data
     for rev in soup.find_all('revision'):
         text = rev.text[:-31]
-        
-        # Trying to remove anything before the real text (but it doesn't apply to every circumstance).
-        # This line of code will remove XXXX{{XXXXX}} in the begining. 
-        # TODO!
-        #text = re.sub('[^\{]*\{\{[^\{]*\}\}', '', text)
-        
+
         # Remove unimportant punctuations 
         text = re.sub('[\[\]\n\']', '', text)
+        
+        # Clean the text
         text = clean(Extractor(0, '0', 0), text)
         
         data.append`({'time': rev.timestamp, 'text': text})
