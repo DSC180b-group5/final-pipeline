@@ -1,3 +1,3 @@
 [submodule "multilanguage-sentiment-analyzer"]
-	path = multilanguage-sentiment-analyzer
+	path = src/multilanguage-sentiment-analyzer
 	url = https://github.com/DSC180b-group5/multilanguage-sentiment-analyzer.git
