@@ -23,15 +23,6 @@ The configuration .json files in the config folder can be used to change the pro
 * targets:       Wikipedia categories from which to analyze articles
 * skip_cats:     Wikipedia categories to skip due to abundance of unnecessary articles
 * output:        data file to write list of articles to
-### English List
-* skip_list:     Wikipedia categories to skip due to abundance of unnecessary articles
-* output:        data file to write to
-### Spanish List
-* skip_list:     Wikipedia categories to skip due to abundance of unnecessary articles
-* output:        data file to write to
-### Chinese List
-* skip_list:     Wikipedia categories to skip due to abundance of unnecessary articles
-* output:        data file to write to
 ### Sentiment
 * language:      English, Spanish, or Chinese
 * infile:        data file to read in from
