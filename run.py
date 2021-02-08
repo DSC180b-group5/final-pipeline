@@ -7,7 +7,6 @@ import os
 from pathlib import Path
 
 sys.path.insert(0, 'src')
-sys.path.insert(0, 'src/multilanguage-sentiment-analyzer')
 
 from pipeline import WikiPipeline
 
@@ -24,21 +23,27 @@ def read_yml(path):
 
 def run_pages(argpath):
     args = read_yml(argpath)
-    for lang, param in args:
+    for entry in args:
+        lang = entry['lang']
+        param = entry['param']
         print(f'running pages for lang {lang}...')
         pl = WikiPipeline(lang)
         pl.pages_full(**param)
 
 def run_sentiment(argpath):
     args = read_yml(argpath)
-    for lang, param in args:
+    for entry in args:
+        lang = entry['lang']
+        param = entry['param']
         print(f'running sentiment for lang {lang}...')
         pl = WikiPipeline(lang)
         pl.sentiment_full(**param)
 
 def run_results(argpath):
     args = read_yml(argpath)
-    for lang, param in args:
+    for entry in args:
+        lang = entry['lang']
+        param = entry['param']
         print(f'running results for lang {lang}...')
         pl = WikiPipeline(lang)
         pl.results_full(**param)

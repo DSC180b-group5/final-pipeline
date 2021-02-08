@@ -3,8 +3,6 @@
 
 import sys
 
-sys.path.insert(0, 'multilanguage-sentiment-analyzer')
-
 from multilang_analyzer import MultilangAnalyzer
 from pages import *
 
