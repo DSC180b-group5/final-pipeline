@@ -1,4 +1,4 @@
 - lang: EN
   param:
-  - infile: data/test_results_in.json
+    infile: data/test_results_in.json
     outfile: data/test_results_out.json

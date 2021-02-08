@@ -1,24 +1,24 @@
 - lang: EN
   param:
-  - targets:
+    targets:
     - cat1
     - cat2
-  - skip_cats:
+    skip_cats:
     - Category:Same-sex sexuality
     - Category:LGBT and society
     - Category:Homosexuality
-  - outfile: data/en_articles.json
+    outfile: data/en_articles.json
 - lang: ES
   param:
-  - targets:
+    targets:
     - cat1
     - cat2
-  - skip_cats:
+    skip_cats:
     - Categoría:Orientación sexual y sociedad
-  - outfile: data/es_articles.json
+    outfile: data/es_articles.json
 - lang: ZH
   param:
-  - targets:
+    targets:
     - cat1
     - cat2
-  - outfile: data/zh_articles.json
+    outfile: data/zh_articles.json

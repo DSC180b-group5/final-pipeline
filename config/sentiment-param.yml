@@ -1,12 +1,12 @@
 - lang: EN
   param:
-  - infile: data/en_articles.json
+    infile: data/en_articles.json
     outfile: data/en_sentiment.json
 - lang: ES
   param:
-  - infile: data/es_articles.json
+    infile: data/es_articles.json
     outfile: data/es_sentiment.json
 - lang: ZH
   param:
-  - infile: data/zh_articles.json
+    infile: data/zh_articles.json
     outfile: data/zh_sentiment.json
