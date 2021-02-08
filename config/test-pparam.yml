@@ -4,6 +4,8 @@
     - cat1
     - cat2
   - skip_cats:
-    - cat3
-    - cat4
+    - Category:Same-sex sexuality
+    - Category:LGBT and society
+    - Category:Homosexuality
+    
   - outfile: data/test_pages_out.json
