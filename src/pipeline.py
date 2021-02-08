@@ -28,6 +28,7 @@ class WikiPipeline:
         articles = set()
         with tqdm(targets, total=len(targets), desc='grabbing articles from cats...') as cat_iter:
             for cat in cat_iter:
+                if cat in skip_cats: continue
                 cat_iter.set_postfix({
                     'cat': cat
                 })
