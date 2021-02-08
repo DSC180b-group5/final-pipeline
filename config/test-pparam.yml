@@ -1,8 +1,8 @@
 - lang: EN
   param:
   - targets:
-    - cat1
-    - cat2
+    - Category:Intersex
+    - Category:LGBT culture
   - skip_cats:
     - Category:Same-sex sexuality
     - Category:LGBT and society
