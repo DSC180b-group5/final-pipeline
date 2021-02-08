@@ -71,9 +71,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     if args.test:
+        print('running test suite...')
         run_pages(TEST_PARGS_PATH)
         run_sentiment(TEST_SARGS_PATH)
         run_results(TEST_RARGS_PATH)
+        print('tests are done')
     if args.pages:
         run_pages(PAGES_ARGS_PATH)
     if args.sentiment:
