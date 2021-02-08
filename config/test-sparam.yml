@@ -1,4 +1,4 @@
 - lang: EN
   param:
-    infile: data/test_sentiment_in.json
+    infile: data/test_pages_out.json
     outfile: data/test_sentiment_out.json

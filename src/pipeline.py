@@ -100,7 +100,7 @@ class WikiPipeline:
                 except:
                     print(f'error finding sentiment for {target}')
         print('saving...')
-        self.save_sentiment(sentiment_data) 
+        self.save_sentiment(sentiment_data, outfile) 
 
     def load_sentiment(self, filename):
         """
