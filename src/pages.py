@@ -33,7 +33,7 @@ def get_history(article_name,lang = 'en'):
         # Clean the text
         text = clean(Extractor(0, '0', 0), text)
         
-        data.append`({'time': rev.timestamp, 'text': text})
+        data.append({'time': rev.timestamp, 'text': text})
 
     return pd.DataFrame(data)
  

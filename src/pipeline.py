@@ -1,8 +1,13 @@
 """
 """
 
-from multilang-analyzer import MultilangAnalyzer
-#TODO other imports
+import sys
+
+sys.path.insert(0, 'multilanguage-sentiment-analyzer')
+
+
+from multilang_analyzer import MultilangAnalyzer
+from pages import *
 
 class WikiPipeline:
 
@@ -42,4 +47,4 @@ class WikiPipeline:
 
         [(date, text), (date, text) ...] ->  [(date, sentiment), (date, sentiment) ...]
         """
-        return [(date, self.sentiment(text) for date, text in datetextlist]
+        return [(date, self.sentiment(text)) for date, text in datetextlist]
