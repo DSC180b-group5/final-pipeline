@@ -1,4 +1,4 @@
 - lang: EN
   param:
-  - infile: file/path
-    outfile: file/path
+  - infile: data/test_sentiment_in.json
+    outfile: data/test_sentiment_out.json

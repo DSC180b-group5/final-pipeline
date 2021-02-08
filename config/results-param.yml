@@ -1,12 +1,12 @@
 - lang: EN
   param:
-  - infile: file/path
-    outfile: file/path
+  - infile: data/en_sentiment.json
+    outfile: data/en_results.json
 - lang: ES
   param:
-  - infile: file/path
-    outfile: file/path
+  - infile: data/es_sentiment.json
+    outfile: data/es_results.json
 - lang: ZH
   param:
-  - infile: file/path
-    outfile: file/path
+  - infile: data/zh_sentiment.json
+    outfile: data/zh_results.json

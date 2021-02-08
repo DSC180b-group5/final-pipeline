@@ -6,7 +6,7 @@
   - skip_cats:
     - cat3
     - cat4
-  - outfile: file/path
+  - outfile: data/en_articles.json
 - lang: ES
   param:
   - targets:
@@ -15,7 +15,7 @@
   - skip_cats:
     - cat3
     - cat4
-  - outfile: file/path
+  - outfile: data/es_articles.json
 - lang: ZH
   param:
   - targets:
@@ -24,4 +24,4 @@
   - skip_cats:
     - cat3
     - cat4
-  - outfile: file/path
+  - outfile: data/zh_articles.json
