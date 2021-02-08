@@ -18,18 +18,41 @@ This program collects wikipedia data from URLs to analyze the sentiment of artic
 
 ## Config Formats
 The configuration .json files in the config folder can be used to change the program operation
+### Pages
+* language:      English, Spanish, or Chinese
+* targets:       Wikipedia categories from which to analyze articles
+* skip_cats:     Wikipedia categories to skip due to abundance of unnecessary articles
+* output:        data file to write list of articles to
 ### English List
-* skip_list     Wikipedia categories to skip due to abundance of unnecessary articles
-* output        data file to write to
+* skip_list:     Wikipedia categories to skip due to abundance of unnecessary articles
+* output:        data file to write to
 ### Spanish List
-* skip_list     Wikipedia categories to skip due to abundance of unnecessary articles
-* output        data file to write to
+* skip_list:     Wikipedia categories to skip due to abundance of unnecessary articles
+* output:        data file to write to
 ### Chinese List
-* skip_list     Wikipedia categories to skip due to abundance of unnecessary articles
-* output        data file to write to
-### Test
-* TBD           TBD
-* TBD           TBD
+* skip_list:     Wikipedia categories to skip due to abundance of unnecessary articles
+* output:        data file to write to
+### Sentiment
+* language:      English, Spanish, or Chinese
+* infile:        data file to read in from
+* outfile:       data file to write to
+### Results
+* language:      English, Spanish, or Chinese
+* infile:        data file to read in from
+* outfile:       data file to write to
+### Test - Pages
+* language:      English, Spanish, or Chinese
+* targets:       Wikipedia categories from which to analyze articles
+* skip_cats:     Wikipedia categories to skip due to abundance of unnecessary articles
+* output:        data file to write list of articles to
+### Test - Sentiment
+* language:      English, Spanish, or Chinese
+* infile:        data file to read in from
+* outfile:       data file to write to
+### Test - Results
+* language:      English, Spanish, or Chinese
+* infile:        data file to read in from
+* outfile:       data file to write to
 
 ---
 Yuanbo Shi
