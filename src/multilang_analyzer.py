@@ -5,6 +5,7 @@ meant to take advantage of multiple NLPs while simplifying downstream analysis c
 
 from snownlp import SnowNLP
 from pysentimiento import SentimentAnalyzer
+from nltk import download
 from nltk.sentiment import SentimentIntensityAnalyzer as VADER
 
 DEFAULT_TEXT = u'.'
@@ -51,7 +52,11 @@ class MultilangAnalyzer:
     """ 
     
     def __setup_en(self):
-        self.analyzer = VADER()
+        try:
+            self.analyzer = VADER()
+        except:
+            download('vader_lexicon')
+            self.analyzer = VADER()
         
 
     def __setup_es(self):
