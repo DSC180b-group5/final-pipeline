@@ -2,13 +2,13 @@
 """
 
 import sys
-from tqdm import tqdm
 
 sys.path.insert(0, 'multilanguage-sentiment-analyzer')
 
-
 from multilang_analyzer import MultilangAnalyzer
 from pages import *
+
+from tqdm import tqdm
 
 class WikiPipeline:
 
@@ -27,7 +27,17 @@ class WikiPipeline:
         """
         returns a list of all the articles in the target categories
         """
-        pass #TODO
+        articles = set()
+        with tqdm(targets, total=len(targets), desc='grabbing articles from cats...') as cat_iter:
+            for cat in cat_iter:
+                cat_iter.set_postfix({
+                    'cat': cat
+                })
+                try:
+                    articles.update(get_articles(cat, self.lang))
+                except:
+                    print(f'could not get articles for cat {cat}')
+        return list(articles)
 
     def save_targets(self, target_articles, filename):
         """
@@ -36,8 +46,7 @@ class WikiPipeline:
         with open(filename, "w") as f:
             json.dump(target_articles, f)
 
-    def pages_full(self, targets, skip_cats=[], outfile):
-        print('getting article targets...')
+    def pages_full(self, targets, outfile, skip_cats=[]):
         target_articles = self.get_target_articles(targets, skip_cats)
         print('saving...')
         self.save_targets(target_articles, outfile)

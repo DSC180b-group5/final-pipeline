@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 
 sys.path.insert(0, 'src')
+sys.path.insert(0, 'src/multilanguage-sentiment-analyzer')
 
 from pipeline import WikiPipeline
 
