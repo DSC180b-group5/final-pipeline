@@ -24,7 +24,9 @@ RUN	apt-get install --yes traceroute
 # 3) install packages
 RUN conda install --yes geopandas 
 RUN pip install --no-cache-dir babypandas networkx scipy python-louvain
-RUN git clone https://github.com/attardi/wikiextractor.git
+RUN pip install wikiextractor
+RUN pip install snownlp
+RUN pip install pysentimiento
 
 # 4) change back to notebook user
 COPY /run_jupyter.sh /
