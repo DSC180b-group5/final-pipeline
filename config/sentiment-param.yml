@@ -1,0 +1,12 @@
+- lang: EN
+  param:
+  - infile: file/path
+    outfile: file/path
+- lang: ES
+  param:
+  - infile: file/path
+    outfile: file/path
+- lang: ZH
+  param:
+  - infile: file/path
+    outfile: file/path

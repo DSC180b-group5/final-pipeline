@@ -103,7 +103,7 @@ def get_articles(cat_name, lang):
     all_cat = [cat_name]
     articles = []
     
-    if lang == 'es':
+    if lang == 'ES':
         CATEGORY = 'Categoría'
     else:
         CATEGORY = 'Category'
@@ -128,7 +128,7 @@ def get_articles(cat_name, lang):
     # return pd.DataFrame(articles).drop_duplicates().reset_index(drop = True)
     return list(set(articles)) # get list of unique articles
   
-def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
+def iter_cats(cat_name, out_path, skip_cats = [], lang = 'EN'):
     '''
     Get all the articles for each subcategory of one given category. 
     The results are saved in different csv files corresponding to category names.
@@ -139,7 +139,7 @@ def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
     PAGES = get_cat(cat_name, lang)
     finished_cat = skip_cats
     
-    if lang == 'es':
+    if lang == 'ES':
         CATEGORY = 'Categoría'
     else:
         CATEGORY = 'Category'

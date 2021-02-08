@@ -1,0 +1,27 @@
+- lang: EN
+  param:
+  - targets:
+    - cat1
+    - cat2
+  - skip_cats:
+    - cat3
+    - cat4
+  - outfile: file/path
+- lang: ES
+  param:
+  - targets:
+    - cat1
+    - cat2
+  - skip_cats:
+    - cat3
+    - cat4
+  - outfile: file/path
+- lang: ZH
+  param:
+  - targets:
+    - cat1
+    - cat2
+  - skip_cats:
+    - cat3
+    - cat4
+  - outfile: file/path

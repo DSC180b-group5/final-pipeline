@@ -13,6 +13,9 @@ from pipeline import WikiPipeline
 PAGES_ARGS_PATH = 'config/pages-param.yml'
 SENT_ARGS_PATH = 'config/sentiment-param.yml'
 RESULTS_ARGS_PATH = 'config/results-param.yml'
+TEST_PARGS_PATH = 'config/test-pparam.yml'
+TEST_SARGS_PATH = 'config/test-sparam.yml'
+TEST_RARGS_PATH = 'config/test-rparam.yml'
 
 def read_yml(path):
     with open(path, 'r') as ymlfile:
@@ -20,15 +23,24 @@ def read_yml(path):
 
 def run_pages(argpath):
     args = read_yml(argpath)
-    #TODO actually do the thing
+    for lang, param in args:
+        print(f'running pages for lang {lang}...')
+        pl = WikiPipeline(lang)
+        pl.pages_full(**param)
 
 def run_sentiment(argpath):
     args = read_yml(argpath)
-    #TODO actually do the thing
+    for lang, param in args:
+        print(f'running sentiment for lang {lang}...')
+        pl = WikiPipeline(lang)
+        pl.sentiment_full(**param)
 
-def run_model(argpath):
+def run_results(argpath):
     args = read_yml(argpath)
-    #TODO actually do the thing
+    for lang, param in args:
+        print(f'running results for lang {lang}...')
+        pl = WikiPipeline(lang)
+        pl.results_full(**param)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -59,8 +71,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     if args.test:
-        # do test things
-        pass
+        run_pages(TEST_PARGS_PATH)
+        run_sentiment(TEST_SARGS_PATH)
+        run_results(TEST_RARGS_PATH)
     if args.pages:
         run_pages(PAGES_ARGS_PATH)
     if args.sentiment:

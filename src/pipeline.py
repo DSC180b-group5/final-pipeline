@@ -2,6 +2,7 @@
 """
 
 import sys
+from tqdm import tqdm
 
 sys.path.insert(0, 'multilanguage-sentiment-analyzer')
 
@@ -35,6 +36,12 @@ class WikiPipeline:
         with open(filename, "w") as f:
             json.dump(target_articles, f)
 
+    def pages_full(self, targets, skip_cats=[], outfile):
+        print('getting article targets...')
+        target_articles = self.get_target_articles(targets, skip_cats)
+        print('saving...')
+        self.save_targets(target_articles, outfile)
+
     def load_targets(self, filename):
         """
         loads list of targets as saved from save_targets
@@ -65,15 +72,37 @@ class WikiPipeline:
 
     def save_sentiment(self, sentimentlist, filename):
         """
-        save list of dict of sentiment data to json
+        save dict of list of dict of sentiment data to json
         """
         with open(filename, "w") as f:
             json.dump(sentimentlist, f)
 
+    def sentiment_full(self, infile, outfile):
+        print('loading...')
+        targets = self.load_targets(infile)
+        sentiment_data = {}
+        with tqdm(targets, total=len(targets), desc='getting page sentiment') as target_iter:
+            for target in target_iter:
+                try:
+                    target_iter.set_postfix({
+                        'target': target
+                    })
+                    datetextlist = self.get_all_page_edits(target)
+                    sentimentlist = self.get_all_sentiment(datetextlist)
+                    sentiment_data[target] = sentimentlist
+                except:
+                    print(f'error finding sentiment for {target}')
+        print('saving...')
+        self.save_sentiment(sentiment_data) 
+
     def load_sentiment(self, filename):
         """
-        load list of dict of sentiment as saved in save_sentiment
+        load dict of list of dict of sentiment as saved in save_sentiment
         """
         with open(filename, "r") as f:
             return json.load(f)
+
+    def results_full(self, infile, outfile):
+        print('results not yet implemented!')
+        pass
 
