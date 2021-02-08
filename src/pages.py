@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 import re
+import json
 from wikiextractor.extract import clean
 from wikiextractor.extract import Extractor
 
@@ -35,7 +36,7 @@ def get_history(article_name,lang = 'en'):
         
         data.append({'time': rev.timestamp, 'text': text})
 
-    return pd.DataFrame(data)
+    return data
  
 
 def compute_sent(input_file, out_folder, sent_func):
@@ -124,8 +125,8 @@ def get_articles(cat_name, lang):
             i += 1
             if i % 1000 == 0:
                 print("{} articles done".format(str(i)))
-    return pd.DataFrame(articles).drop_duplicates().reset_index(drop = True)
-  
+    # return pd.DataFrame(articles).drop_duplicates().reset_index(drop = True)
+    return list(set(articles)) # get list of unique articles
   
 def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
     '''
@@ -152,5 +153,7 @@ def iter_cats(cat_name, out_path, skip_cats = [], lang = 'en'):
             article = get_articles(p['title'], lang)
             outfile = out_path + lang + '_' + re.sub('[:\s]', '_',p['title'].strip()[ind:]) + '.csv'
             article.to_csv(outfile)
+            with open(outfile, 'w') as f:
+                json.dump(article, f) # dump file to json, can load with json.load(fp)
             finished_cat.append(p['title'])
             print(time.time() - start)

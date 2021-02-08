@@ -6,6 +6,9 @@ import sys
 import os
 from pathlib import Path
 
+sys.path.insert(0, 'src')
+
+from pipeline import WikiPipeline
 
 PAGES_ARGS_PATH = 'config/pages-param.yml'
 SENT_ARGS_PATH = 'config/sentiment-param.yml'
@@ -47,8 +50,17 @@ if __name__ == '__main__':
         help='stats and visuals from sentiment analysis', 
         action='store_true'
     )
+    parser.add_argument(
+        '-t', 
+        '--test', 
+        help='run test suite', 
+        action='store_true'
+    )
 
     args = parser.parse_args()
+    if args.test:
+        # do test things
+        pass
     if args.pages:
         run_pages(PAGES_ARGS_PATH)
     if args.sentiment:
