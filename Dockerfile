@@ -25,8 +25,8 @@ RUN	apt-get install --yes traceroute
 RUN conda install --yes geopandas 
 RUN pip install --no-cache-dir babypandas networkx scipy python-louvain
 RUN pip install wikiextractor
-RUN pip install snownlp
-RUN pip install pysentimiento
+RUN pip3 install bixin
+RUN pip install spanish_sentiment_analysis
 
 # 4) change back to notebook user
 COPY /run_jupyter.sh /
