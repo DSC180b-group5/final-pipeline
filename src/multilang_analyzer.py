@@ -3,7 +3,7 @@ Multi-language sentiment analyzer
 meant to take advantage of multiple NLPs while simplifying downstream analysis code
 """
 
-from snownlp import SnowNLP
+import bixin
 from pysentimiento import SentimentAnalyzer
 from nltk import download
 from nltk.sentiment import SentimentIntensityAnalyzer as VADER
@@ -63,7 +63,8 @@ class MultilangAnalyzer:
         self.analyzer = SentimentAnalyzer()
 
     def __setup_zh(self):
-        self.analyzer = SnowNLP(DEFAULT_TEXT)
+        self.analyzer = bixin
+        
 
     """
     ### SENTIMENT METHODS ###
@@ -76,5 +77,4 @@ class MultilangAnalyzer:
         return self.analyzer.predict_probas(text)
 
     def __sentiment_zh(self, text):
-        self.analyzer.doc = text
-        return self.analyzer.sentiments
+        return self.analyzer.predict(text)
