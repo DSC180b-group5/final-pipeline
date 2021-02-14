@@ -108,6 +108,14 @@ class WikiPipeline:
     def load_sentiment(self, filename):
         """
         load dict of list of dict of sentiment as saved in save_sentiment
+        dict { // overarching data structure
+         "page_name": list( // each page has a list of edits
+           dict{ // each edit dict has its date as a string and its sentiment as a float
+            "time": datetime string,
+            "sentiment": float
+           }, ...
+          ), ...
+        }
         """
         with open(filename, "r") as f:
             return json.load(f)
