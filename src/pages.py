@@ -157,3 +157,15 @@ def iter_cats(cat_name, out_path, skip_cats = [], lang = 'EN'):
                 json.dump(article, f) # dump file to json, can load with json.load(fp)
             finished_cat.append(p['title'])
             print(time.time() - start)
+            
+def split_list(fp):
+    '''
+    Split article list json into multiple json files
+    '''
+    with open(fp, 'r') as f:
+        json_obj_list = json.load(f) #read file and convert it to dictionary
+        for json_obj in json_obj_list:
+            filename=json_obj['_id']+'.json'
+            with open(filename, 'w') as out_json_file:
+                # Save each obj to their respective filepath
+                json.dump(json_obj, out_json_file, indent=4) #last parameter makes formatting nicer

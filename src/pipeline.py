@@ -8,6 +8,8 @@ from pages import *
 
 from tqdm import tqdm
 
+import glob
+
 class WikiPipeline:
 
     """
@@ -113,4 +115,14 @@ class WikiPipeline:
     def results_full(self, infile, outfile):
         print('results not yet implemented!')
         pass
-
+    
+    def combine_lists():
+        '''
+        Combine all sentiment json files into single json file
+        '''
+        result = []
+        for f in glob.glob("*.json"):
+            with open(f, "rb") as infile:
+                result.append(json.load(infile)) #combine into a Python list
+        with open("merged_file.json", "wb") as outfile:
+            json.dump(result, outfile) #write list to file as a json
