@@ -47,8 +47,45 @@ class WikiPipeline:
         with open(filename, "w") as f:
             json.dump(target_articles, f)
 
+    def get_all_page_edits(self, name):
+        """
+        acquires all versions of the given page, in a list of dicts
+
+        name -> [{time, text}, {time, text} ...]    
+        """
+        return get_history(name, self.lang)
+
+    def get_all_histories(targets):
+        """
+        for each article, gets the article history
+        returns a dict with this schema:
+
+        {
+            # for each article
+            "article_name": [
+                # for each edit
+                {
+                    "time": datetime,
+                    "text": string
+                }, ...
+            ], ...
+        }
+        """
+        histories = {}
+        with tqdm(targets, total=len(targets), desc='getting page edit hist') as target_iter:
+            for target in target_iter:
+                try:
+                    target_iter.set_postfix({
+                        'target': target
+                    })
+                    histories[target] = self.get_all_page_edits(target)
+                except:
+                    print(f'error finding edit history for {target}')
+        return histories
+
     def pages_full(self, targets, outfile, skip_cats=[]):
         target_articles = self.get_target_articles(targets, skip_cats)
+        article_histories = self.get_all_histories(target_articles)
         print('saving...')
         self.save_targets(target_articles, outfile)
 
@@ -58,14 +95,6 @@ class WikiPipeline:
         """
         with open(filename, "r") as f:
             return json.load(f)
-
-    def get_all_page_edits(self, name):
-        """
-        acquires all versions of the given page, in a list of dicts
-
-        url -> [{time, text}, {time, text} ...]    
-        """
-        return get_history(name, self.lang)
 
     def sentiment(self, text):
         return self.analyzer.sentiment(text)
@@ -91,17 +120,16 @@ class WikiPipeline:
         print('loading...')
         targets = self.load_targets(infile)
         sentiment_data = {}
-        with tqdm(targets, total=len(targets), desc='getting page sentiment') as target_iter:
-            for target in target_iter:
+        with tqdm(targets.items(), total=len(targets), desc='getting page sentiment') as target_iter:
+            for article_name, history in target_iter:
                 try:
                     target_iter.set_postfix({
-                        'target': target
+                        'target': article_name
                     })
-                    datetextlist = self.get_all_page_edits(target)
-                    sentimentlist = self.get_all_sentiment(datetextlist)
-                    sentiment_data[target] = sentimentlist
+                    sentimentlist = self.get_all_sentiment(history)
+                    sentiment_data[article_name] = sentimentlist
                 except:
-                    print(f'error finding sentiment for {target}')
+                    print(f'error finding sentiment for {article_name}')
         print('saving...')
         self.save_sentiment(sentiment_data, outfile) 
 
