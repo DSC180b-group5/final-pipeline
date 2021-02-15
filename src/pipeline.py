@@ -2,6 +2,7 @@
 """
 
 import sys
+import os
 
 from multilang_analyzer import MultilangAnalyzer
 from pages import *
@@ -83,23 +84,43 @@ class WikiPipeline:
                     print(f'error finding edit history for {target}')
         return histories
 
-    def pages_full(self, targets, outfile, skip_cats=[]):
-        target_articles = self.get_target_articles(targets, skip_cats)
-        article_histories = self.get_all_histories(target_articles)
-        print('saving...')
-        self.save_targets(target_articles, outfile)
+    def save_all_histories(targets, dir_path):
+        """
+        for each article, gets the article history
+        saves each history to a file in the target directory:
+        """
+        # find or make our target directory
+        if not os.path.idsir(dir_path):
+            os.mkdir(dir_path)
 
-    def load_targets(self, filename):
-        """
-        loads list of targets as saved from save_targets
-        """
-        with open(filename, "r") as f:
-            return json.load(f)
+        with tqdm(targets, total=len(targets), desc='saving page edit hist') as target_iter:
+            for target in target_iter:
+                try:
+                    # get page edit history
+                    target_iter.set_postfix({
+                        'target': target
+                        'now': "querying"
+                    })
+                    history = self.get_all_page_edits(target)
+                    # save edit history
+                    target_iter.set_postfix({
+                        'target': target
+                        'now': "saving"
+                    })
+                    filename = f'{dir_path}/{target}.json'
+                    with open(filename, "w") as f:
+                        json.dump(history, f)
+                except:
+                    print(f'error finding edit history for {target}')
+
+    def pages_full(self, targets, outdir, skip_cats=[]):
+        target_articles = self.get_target_articles(targets, skip_cats)
+        self.save_all_histories(target_articles, outdir)
 
     def sentiment(self, text):
         return self.analyzer.sentiment(text)
 
-    def get_all_sentiment(self, datetextlist):
+    def get_article_sentiment(self, datetextlist):
         """
         given output from get_all_page_edits, get sentiment for each text
         output in the form of tuples (date, sentiment)
@@ -108,6 +129,25 @@ class WikiPipeline:
         """
         return [{'time': item['time'], 'sentiment': self.sentiment(item['text'])} 
                 for item in datetextlist.items()]
+   
+    def get_article_name_from_filename(self, filename):
+        return os.path.splitext(os.path.basename)[0]
+
+    def get_all_sentiments(self, indir):
+        target_files = os.listdir(indir)
+        sentiment_data = {}
+        with tqdm(target_files, total=len(target_files), desc='getting page sentiment') as dir_iter:
+            for filename in dir_iter:
+                with open(filename, "r") as f:
+                    datetextlist = json.load(f)
+                    try:
+                        article_name = get_article_name_from_filename(filename)
+                        target_iter.set_postfix({
+                            'target': article_name
+                        })
+                        sentiment_data[article_name] = self.get_article_sentiment(datetextlist)
+                    except:
+                        print(f'error finding sentiment for {article_name}')
 
     def save_sentiment(self, sentimentlist, filename):
         """
@@ -116,20 +156,8 @@ class WikiPipeline:
         with open(filename, "w") as f:
             json.dump(sentimentlist, f)
 
-    def sentiment_full(self, infile, outfile):
-        print('loading...')
-        targets = self.load_targets(infile)
-        sentiment_data = {}
-        with tqdm(targets.items(), total=len(targets), desc='getting page sentiment') as target_iter:
-            for article_name, history in target_iter:
-                try:
-                    target_iter.set_postfix({
-                        'target': article_name
-                    })
-                    sentimentlist = self.get_all_sentiment(history)
-                    sentiment_data[article_name] = sentimentlist
-                except:
-                    print(f'error finding sentiment for {article_name}')
+    def sentiment_full(self, indir, outfile):
+        self.get_all_sentiments(indir)
         print('saving...')
         self.save_sentiment(sentiment_data, outfile) 
 
