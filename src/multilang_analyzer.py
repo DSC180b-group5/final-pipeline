@@ -4,7 +4,7 @@ meant to take advantage of multiple NLPs while simplifying downstream analysis c
 """
 
 import bixin
-from pysentimiento import SentimentAnalyzer
+from classifier import *
 from nltk import download
 from nltk.sentiment import SentimentIntensityAnalyzer as VADER
 
@@ -60,7 +60,7 @@ class MultilangAnalyzer:
         
 
     def __setup_es(self):
-        self.analyzer = SentimentAnalyzer()
+        self.analyzer = SentimentClassifier()
 
     def __setup_zh(self):
         self.analyzer = bixin
@@ -74,7 +74,7 @@ class MultilangAnalyzer:
         return self.analyzer.polarity_scores(text)
 
     def __sentiment_es(self, text):
-        return self.analyzer.predict_probas(text)
+        return self.analyzer.predict(text)
 
     def __sentiment_zh(self, text):
         return self.analyzer.predict(text)
