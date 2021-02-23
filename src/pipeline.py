@@ -7,6 +7,8 @@ import os
 from multilang_analyzer import MultilangAnalyzer
 from pages import *
 
+from multiprocessing import Pool
+
 from tqdm import tqdm
 
 import glob
@@ -56,7 +58,7 @@ class WikiPipeline:
         """
         return get_history(name, self.lang)
 
-    def get_all_histories(targets):
+    def get_all_histories(self, targets):
         """
         for each article, gets the article history
         returns a dict with this schema:
@@ -84,7 +86,7 @@ class WikiPipeline:
                     print(f'error finding edit history for {target}')
         return histories
 
-    def save_all_histories(targets, dir_path):
+    def save_all_histories(self, targets, dir_path):
         """
         for each article, gets the article history
         saves each history to a file in the target directory:
@@ -113,9 +115,37 @@ class WikiPipeline:
                 except:
                     print(f'error finding edit history for {target}')
 
+    def process_target(self, target):
+        """
+        not used above in order to allow for tqdm postfix updates
+        """
+        try:
+            history = self.get_all_page_edits(target)
+            filename = f'{dir_path}/{target}.json'
+            with open(filename, "w") as f:
+                json.dump(history, f)
+        except:
+            print(f'error finding edit history for {target}')
+
+    def save_all_histories_multiprocessing(self, targets, dir_path, processes=8):
+        """
+        the above, but with multiprocessing
+        """
+        # find or make our target directory
+        if not os.path.idsir(dir_path):
+            os.mkdir(dir_path)
+
+        pool = Pool(processes = processes)
+
+        with tqdm(pool.imap_unordered(self.process_target, targets), 
+                  total=len(targets), 
+                  desc='saving page edit hist') as target_iter:
+            for _ in target_iter:
+                pass
+            
     def pages_full(self, targets, outdir, skip_cats=[]):
         target_articles = self.get_target_articles(targets, skip_cats)
-        self.save_all_histories(target_articles, outdir)
+        self.save_all_histories_multiprocessing(target_articles, outdir)
 
     def sentiment(self, text):
         return self.analyzer.sentiment(text)
@@ -133,21 +163,46 @@ class WikiPipeline:
     def get_article_name_from_filename(self, filename):
         return os.path.splitext(os.path.basename)[0]
 
+    def process_sentiment(self, filename, sentiment_data):
+        article_name = get_article_name_from_filename(filename)
+        with open(filename, "r") as f:
+            datetextlist = json.load(f)
+            try:
+                sentiment_data[article_name] = self.get_article_sentiment(datetextlist)
+            except:
+                print(f'error finding sentiment for {article_name}')
+
+
+
     def get_all_sentiments(self, indir):
         target_files = os.listdir(indir)
         sentiment_data = {}
         with tqdm(target_files, total=len(target_files), desc='getting page sentiment') as dir_iter:
             for filename in dir_iter:
+                article_name = get_article_name_from_filename(filename)
+                target_iter.set_postfix({
+                    'target': article_name
+                })
                 with open(filename, "r") as f:
                     datetextlist = json.load(f)
                     try:
-                        article_name = get_article_name_from_filename(filename)
-                        target_iter.set_postfix({
-                            'target': article_name
-                        })
                         sentiment_data[article_name] = self.get_article_sentiment(datetextlist)
                     except:
                         print(f'error finding sentiment for {article_name}')
+
+
+    def get_all_sentiments_multiprocessing(self, indir, processes=8):
+        target_files = os.listdir(indir)
+        sentiment_data = {}
+
+        pool = Pool(processes = processes)
+
+        with tqdm(pool.imap_unordered(self.process_sentiment, target_files), 
+                  total=len(target_files), 
+                  desc='getting page sentiment') as dir_iter:
+            for _ in dir_iter:
+                pass
+
 
     def save_sentiment(self, sentimentlist, filename):
         """
@@ -157,7 +212,7 @@ class WikiPipeline:
             json.dump(sentimentlist, f)
 
     def sentiment_full(self, indir, outfile):
-        self.get_all_sentiments(indir)
+        self.get_all_sentiments_multiprocessing(indir)
         print('saving...')
         self.save_sentiment(sentiment_data, outfile) 
 
