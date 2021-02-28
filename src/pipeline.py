@@ -132,7 +132,7 @@ class WikiPipeline:
         the above, but with multiprocessing
         """
         # find or make our target directory
-        if not os.path.idsir(dir_path):
+        if not os.path.isdir(dir_path):
             os.mkdir(dir_path)
 
         pool = Pool(processes = processes)
