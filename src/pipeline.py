@@ -100,13 +100,13 @@ class WikiPipeline:
                 try:
                     # get page edit history
                     target_iter.set_postfix({
-                        'target': target
+                        'target': target, 
                         'now': "querying"
                     })
                     history = self.get_all_page_edits(target)
                     # save edit history
                     target_iter.set_postfix({
-                        'target': target
+                        'target': target, 
                         'now': "saving"
                     })
                     filename = f'{dir_path}/{target}.json'
