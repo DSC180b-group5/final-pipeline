@@ -7,4 +7,4 @@
     - Category:LGBT and society
     - Category:Homosexuality
     
-    outfile: data/test_pages_out.json
+    outdir: data/testpagesout

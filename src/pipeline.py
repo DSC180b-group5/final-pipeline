@@ -163,16 +163,15 @@ class WikiPipeline:
     def get_article_name_from_filename(self, filename):
         return os.path.splitext(os.path.basename)[0]
 
-    def process_sentiment(self, filename, sentiment_data):
+    def process_sentiment(self, filename):
         article_name = get_article_name_from_filename(filename)
         with open(filename, "r") as f:
             datetextlist = json.load(f)
             try:
-                sentiment_data[article_name] = self.get_article_sentiment(datetextlist)
+                return article_name, self.get_article_sentiment(datetextlist)
             except:
                 print(f'error finding sentiment for {article_name}')
-
-
+        return article_name, none # error return value
 
     def get_all_sentiments(self, indir):
         target_files = os.listdir(indir)
@@ -200,8 +199,8 @@ class WikiPipeline:
         with tqdm(pool.imap_unordered(self.process_sentiment, target_files), 
                   total=len(target_files), 
                   desc='getting page sentiment') as dir_iter:
-            for _ in dir_iter:
-                pass
+            for article_name, sentiment in dir_iter:
+                sentiment_data[article_name] = sentiment
 
 
     def save_sentiment(self, sentimentlist, filename):
@@ -212,7 +211,7 @@ class WikiPipeline:
             json.dump(sentimentlist, f)
 
     def sentiment_full(self, indir, outfile):
-        self.get_all_sentiments_multiprocessing(indir)
+        sentiment_data = self.get_all_sentiments_multiprocessing(indir)
         print('saving...')
         self.save_sentiment(sentiment_data, outfile) 
 

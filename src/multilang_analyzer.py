@@ -4,7 +4,7 @@ meant to take advantage of multiple NLPs while simplifying downstream analysis c
 """
 
 import bixin
-from classifier import *
+# from classifier import *
 from nltk import download
 from nltk.sentiment import SentimentIntensityAnalyzer as VADER
 
