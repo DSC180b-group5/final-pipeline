@@ -7,7 +7,7 @@
     - Category:Same-sex sexuality
     - Category:LGBT and society
     - Category:Homosexuality
-    outfile: data/en_articles.json
+    outdir: data/en_articles
 - lang: ES
   param:
     targets:
@@ -15,10 +15,10 @@
     - cat2
     skip_cats:
     - Categoría:Orientación sexual y sociedad
-    outfile: data/es_articles.json
+    outdir: data/es_articles
 - lang: ZH
   param:
     targets:
     - cat1
     - cat2
-    outfile: data/zh_articles.json
+    outdir: data/zh_articles
