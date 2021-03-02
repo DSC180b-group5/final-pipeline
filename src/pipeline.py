@@ -32,7 +32,8 @@ class WikiPipeline:
         """
         returns a list of all the articles in the target categories
         """
-        articles = set()
+        #articles = set()
+        articles = []
         with tqdm(targets, total=len(targets), desc='grabbing articles from cats...') as cat_iter:
             for cat in cat_iter:
                 if cat in skip_cats: continue
@@ -40,10 +41,11 @@ class WikiPipeline:
                     'cat': cat
                 })
                 try:
-                    articles.update(get_articles(cat, self.lang))
+                    articles += get_articles(cat, self.lang)
                 except:
                     print(f'could not get articles for cat {cat}')
-        return list(articles)
+        #return list(articles)
+        return articles
 
     def save_targets(self, target_articles, filename):
         """
@@ -148,6 +150,7 @@ class WikiPipeline:
     def pages_full(self, targets, outdir, skip_cats=[]):
         target_articles = self.get_target_articles(targets, skip_cats)
         self.save_all_histories_multiprocessing(target_articles, outdir)
+        #self.save_all_histories(target_articles, outdir)
 
     def sentiment(self, text):
         return self.analyzer.sentiment(text)
@@ -160,10 +163,11 @@ class WikiPipeline:
         [{time, text}, {time, text} ...] ->  [{time, sentiment}, {time, sentiment} ...]
         """
         return [{'time': item['time'], 'sentiment': self.sentiment(item['text'])} 
-                for item in datetextlist.items()]
+                for item in datetextlist]
    
     def get_article_name_from_filename(self, filename):
-        return os.path.splitext(os.path.basename)[0]
+        return os.path.splitext(filename)[0]
+        #return os.path.splitext(os.path.basename)[0]
 
     def process_sentiment(self, filename):
         article_name = get_article_name_from_filename(filename)
@@ -180,16 +184,17 @@ class WikiPipeline:
         sentiment_data = {}
         with tqdm(target_files, total=len(target_files), desc='getting page sentiment') as dir_iter:
             for filename in dir_iter:
-                article_name = get_article_name_from_filename(filename)
-                target_iter.set_postfix({
-                    'target': article_name
-                })
-                with open(filename, "r") as f:
+                article_name = self.get_article_name_from_filename(filename)
+#                 target_iter.set_postfix({
+#                     'target': article_name
+#                 })
+                with open(f'{indir}/{filename}', "r") as f:
                     datetextlist = json.load(f)
                     try:
                         sentiment_data[article_name] = self.get_article_sentiment(datetextlist)
                     except:
                         print(f'error finding sentiment for {article_name}')
+        return sentiment_data
 
 
     def get_all_sentiments_multiprocessing(self, indir, processes=8):
