@@ -254,5 +254,5 @@ class WikiPipeline:
             
     def dummy_vars(self, filename):
         sent_dict = load_sentiment(self, filename)
-        article_names = sent_dict.keys()
+        article_names = list(sent_dict.keys())
         return pd.get_dummies(article_names)
