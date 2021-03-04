@@ -237,9 +237,15 @@ class WikiPipeline:
         with open(filename, "r") as f:
             return json.load(f)
 
-    def results_full(self, infile, outfile):
-        print('results not yet implemented!')
+    def fe_regression(self, sentiment_data):
+        # do the fixed effects regression
+        # save it to a file
+        print('regression not yet implemented!')
         pass
+
+    def results_full(self, infile, outfile):
+        sentiment_data = self.load_sentiment(infile)
+        self.fe_regression(sentiment_data)
     
     def combine_lists():
         '''
