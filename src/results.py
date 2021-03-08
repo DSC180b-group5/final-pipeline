@@ -69,5 +69,5 @@ def results(data, language):
   model2 = sm.OLS(Y2,X)
   results2 = model2.fit()
   p2 = results2.params
-  plot(new_df, p, X, 'med_sentiment', name=f"data/{language}_med_sentiment.png")
+  plot(new_df, p2, X, 'med_sentiment', name=f"data/{language}_med_sentiment.png")
   return results.summary(), results2.summary()
