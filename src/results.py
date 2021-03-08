@@ -1,6 +1,5 @@
 import pandas as pd
 import statsmodels.api as sm
-import matplotlib.pyplot as plt
        
 def to_year(string):
   """
@@ -25,7 +24,16 @@ def to_dataframe(df):
             sentiment.append(mini[j]['sentiment'])
         dfn = pd.DataFrame({'time': time, 'sentiment': sentiment})
         dfn['time'] = dfn['time'].apply(to_year)
-        dfn = (dfn.groupby('time')['sentiment'].mean()).to_frame().reset_index().rename(columns={"time": "year", "sentiment": "avg_sentiment"})
+        dfn = (
+            dfn.groupby('time')['sentiment']
+            .agg(["mean", "median"])
+            .reset_index()
+            .rename(columns={
+                "time": "year", 
+                "mean": "avg_sentiment", 
+                "median": "med_sentiment"
+            })
+        )
         dfn['article name'] = mini.name
         dflist.append(dfn)
     new_df = pd.concat(dflist, ignore_index=True)
