@@ -6,6 +6,7 @@ import os
 
 from multilang_analyzer import MultilangAnalyzer
 from pages import *
+from results import *
 
 from multiprocessing import Pool
 
@@ -240,8 +241,11 @@ class WikiPipeline:
     def fe_regression(self, sentiment_data):
         # do the fixed effects regression
         # save it to a file
-        print('regression not yet implemented!')
-        pass
+        print("TODO: saving things! Stop now if that matters to you!")
+        res1, res2 = results(sentiment_data)
+        print(res1)
+        print(res2)
+        #TODO: save things to file
 
     def results_full(self, infile, outfile):
         sentiment_data = self.load_sentiment(infile)

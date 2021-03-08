@@ -1,22 +1,6 @@
 import pandas as pd
-import json
 import statsmodels.api as sm
-
-def load_sentiment(self, filename):
-        """
-        load dict of list of dict of sentiment as saved in save_sentiment
-        dict { // overarching data structure
-         "page_name": list( // each page has a list of edits
-           dict{ // each edit dict has its date as a string and its sentiment as a float
-            "time": datetime string,
-            "sentiment": float
-           }, ...
-          ), ...
-        }
-        """
-        with open(filename, "r") as f:
-            return json.load(f)
-        
+       
 def to_year(string):
   """
   input is a timestamp (string)
@@ -46,7 +30,7 @@ def to_dataframe(df):
     new_df = pd.concat(dflist, ignore_index=True)
     return new_df
   
-def results():
+def results(data):
   """
   outputs a fixed effects regression summary of the sentiment scores
   """
