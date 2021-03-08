@@ -43,7 +43,7 @@ def plot(df, p, X, y, name):
     ax = df.plot(x='year', y=y, kind='scatter')
     ax.plot(X, p.const + p.year * X)
     ax.set_xlim([2000, 2022])
-    ax.set_ylim([round(df[y].min(), 1), round(df[y].max(), 1)])
+    ax.set_ylim([round(df[y].min()-0.1, 1), round(df[y].max()+0.1, 1)])
     fig = ax.get_figure()
     fig.savefig(name)
   
