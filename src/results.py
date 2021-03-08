@@ -1,5 +1,6 @@
 import pandas as pd
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
        
 def to_year(string):
   """
@@ -36,19 +37,14 @@ def results(data):
   """
   df = pd.DataFrame.from_dict(data, orient='index')
   new_df = to_dataframe(df)
-  dum = pd.get_dummies(new_df['article name'])
+  dum = pd.get_dummies(new_df['article name'], drop_first=True)
   new_df = new_df.join(dum).drop('article name', axis=1)
   cols = list(new_df.columns)
   cols.remove('avg_sentiment')
   Y = new_df['avg_sentiment']
   X = new_df[cols]
+  X = sm.add_constant(X)
   model = sm.OLS(Y,X)
   results = model.fit()
-  cols.remove('year')
-  newer_df = new_df.copy()
-  newer_df[cols] = (newer_df[cols]).mul(newer_df['year'],axis="index")
-  cols = ['year']+cols
-  X2 = newer_df[cols]
-  model2 = sm.OLS(Y2,X2)
-  results2 = model2.fit()
-  return results.summary(), results2.summary()
+  p = results.params
+  return results.summary()
