@@ -240,12 +240,8 @@ class WikiPipeline:
 
     def fe_regression(self, sentiment_data, language):
         # do the fixed effects regression
-        # save it to a file
-        print("TODO: saving things! Stop now if that matters to you!")
-        res1, res2 = results(sentiment_data)
-        print(res1)
-        print(res2)
-        #TODO: save things to file
+        # save plot to a file
+        res1, res2 = results(sentiment_data, language)
 
     def results_full(self, infile, language):
         sentiment_data = self.load_sentiment(infile)
