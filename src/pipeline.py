@@ -238,7 +238,7 @@ class WikiPipeline:
         with open(filename, "r") as f:
             return json.load(f)
 
-    def fe_regression(self, sentiment_data):
+    def fe_regression(self, sentiment_data, language):
         # do the fixed effects regression
         # save it to a file
         print("TODO: saving things! Stop now if that matters to you!")
@@ -247,9 +247,9 @@ class WikiPipeline:
         print(res2)
         #TODO: save things to file
 
-    def results_full(self, infile, outfile):
+    def results_full(self, infile, language):
         sentiment_data = self.load_sentiment(infile)
-        self.fe_regression(sentiment_data)
+        self.fe_regression(sentiment_data, language)
     
     def combine_lists():
         '''
