@@ -49,10 +49,15 @@ def results(data):
   new_df = new_df.join(dum).drop('article name', axis=1)
   cols = list(new_df.columns)
   cols.remove('avg_sentiment')
+  cols.remove('med_sentiment')
   Y = new_df['avg_sentiment']
   X = new_df[cols]
   X = sm.add_constant(X)
   model = sm.OLS(Y,X)
   results = model.fit()
   p = results.params
-  return results.summary()
+  Y2 = new_df['med_sentiment']
+  model2 = sm.OLS(Y2,X)
+  results2 = model2.fit()
+  p2 = results2.params
+  return results.summary(), results2.summary()
