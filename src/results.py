@@ -64,10 +64,10 @@ def results(data, language):
   model = sm.OLS(Y,X)
   results = model.fit()
   p = results.params
-  plot(new_df, p, X, 'avg_sentiment', name=f"{language}_avg_sentiment.png")
+  plot(new_df, p, X, 'avg_sentiment', name=f"data/{language}_avg_sentiment.png")
   Y2 = new_df['med_sentiment']
   model2 = sm.OLS(Y2,X)
   results2 = model2.fit()
   p2 = results2.params
-  plot(new_df, p, X, 'med_sentiment', name=f"{language}_med_sentiment.png")
+  plot(new_df, p, X, 'med_sentiment', name=f"data/{language}_med_sentiment.png")
   return results.summary(), results2.summary()
