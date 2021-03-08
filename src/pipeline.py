@@ -16,6 +16,9 @@ import glob
 
 import pandas as pd
 
+from random import sample
+import re
+
 class WikiPipeline:
 
     """
@@ -114,7 +117,8 @@ class WikiPipeline:
                         'target': target, 
                         'now': "saving"
                     })
-                    filename = f'{dir_path}/{target}.json'
+                    fname = re.sub('[:\s<>\|\?\*]', '_', target)
+                    filename = f'{dir_path}/{fname}.json'
                     with open(filename, "w") as f:
                         json.dump(history, f)
                 except:
@@ -126,7 +130,9 @@ class WikiPipeline:
         """
         try:
             history = self.get_all_page_edits(target)
-            filename = f'{dir_path}/{target}.json'
+            fname = re.sub('[:\s<>\|\?\*]', '_', target)
+            filename = f'{dir_path}/{fname}.json'
+            
             with open(filename, "w") as f:
                 json.dump(history, f)
         except:
@@ -150,6 +156,8 @@ class WikiPipeline:
             
     def pages_full(self, targets, outdir, skip_cats=[]):
         target_articles = self.get_target_articles(targets, skip_cats)
+        print('sampling 1000 articles out of {}'.format(len(target_articles)))
+        target_articles = sample(target_articles, 1000)
         self.save_all_histories_multiprocessing(target_articles, outdir)
         #self.save_all_histories(target_articles, outdir)
 
