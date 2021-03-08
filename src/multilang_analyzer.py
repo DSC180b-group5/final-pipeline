@@ -7,6 +7,7 @@ import bixin
 # from classifier import *
 from nltk import download
 from nltk.sentiment import SentimentIntensityAnalyzer as VADER
+from textblob import TextBlob
 
 DEFAULT_TEXT = u'.'
 
@@ -52,11 +53,7 @@ class MultilangAnalyzer:
     """ 
     
     def __setup_en(self):
-        try:
-            self.analyzer = VADER()
-        except:
-            download('vader_lexicon')
-            self.analyzer = VADER()
+        self.analyzer = TextBlob
         
 
     def __setup_es(self):
@@ -71,7 +68,7 @@ class MultilangAnalyzer:
     """ 
 
     def __sentiment_en(self, text):
-        return self.analyzer.polarity_scores(text)
+        return self.analyzer(text).sentiment.polarity
 
     def __sentiment_es(self, text):
         return self.analyzer.predict(text)
