@@ -27,6 +27,8 @@ RUN pip install --no-cache-dir babypandas networkx scipy python-louvain
 RUN pip install wikiextractor
 RUN pip3 install bixin
 RUN pip install spanish_sentiment_analysis
+RUN pip install -U textblob
+RUN pip install --user -U nltk
 
 # 4) change back to notebook user
 COPY /run_jupyter.sh /
