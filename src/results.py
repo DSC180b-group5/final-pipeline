@@ -38,8 +38,16 @@ def to_dataframe(df):
         dflist.append(dfn)
     new_df = pd.concat(dflist, ignore_index=True)
     return new_df
+
+def plot(df, p, X, y, name):
+    ax = df.plot(x='year', y=y, kind='scatter')
+    ax.plot(X, p.const + p.year * X)
+    ax.set_xlim([2000, 2022])
+    ax.set_ylim([-0.8, 0.8]) # TODO: automatically determine best y axis limits
+    fig = ax.get_figure()
+    fig.savefig(name)
   
-def results(data):
+def results(data, language):
   """
   outputs a fixed effects regression summary of the sentiment scores
   """
