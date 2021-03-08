@@ -261,8 +261,3 @@ class WikiPipeline:
                 result.append(json.load(infile)) #combine into a Python list
         with open("merged_file.json", "wb") as outfile:
             json.dump(result, outfile) #write list to file as a json
-            
-    def dummy_vars(self, filename):
-        sent_dict = load_sentiment(self, filename)
-        article_names = list(sent_dict.keys())
-        return pd.get_dummies(article_names)
